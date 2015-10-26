@@ -127,6 +127,7 @@ public class ClientFrame2 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btRecuperarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRecuperarActionPerformed
+        //recuperar
         if (tfID.getText().trim().equals("") == false) {
             try {
                 Client cli = new Client("localhost", 20000);
