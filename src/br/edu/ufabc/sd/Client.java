@@ -51,6 +51,13 @@ public class Client {
         req.setPlayerContent(player);
         return sendReceive(req);
     }
+    
+    public Resposta allUsers() throws IOException, ClassNotFoundException 
+    {
+        Requisicao req = new Requisicao();
+        req.setMessageType(Requisicao.ALL_PLAYERS);
+        return sendReceive(req);
+    }
 
     public void close() throws IOException
     {

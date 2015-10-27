@@ -39,6 +39,7 @@ public class ClientFrame2 extends javax.swing.JFrame {
         btCadastrar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        btListar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,6 +64,13 @@ public class ClientFrame2 extends javax.swing.JFrame {
         jLabel3.setText("Email");
 
         jLabel4.setText("Score");
+
+        btListar.setText("Listar");
+        btListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btListarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -91,11 +99,13 @@ public class ClientFrame2 extends javax.swing.JFrame {
                         .addComponent(tfEmail)))
                 .addGap(27, 27, 27))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(25, 25, 25)
                 .addComponent(btRecuperar)
-                .addGap(54, 54, 54)
+                .addGap(35, 35, 35)
                 .addComponent(btCadastrar)
-                .addGap(94, 94, 94))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btListar)
+                .addGap(44, 44, 44))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,7 +129,8 @@ public class ClientFrame2 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btCadastrar)
-                    .addComponent(btRecuperar))
+                    .addComponent(btRecuperar)
+                    .addComponent(btListar))
                 .addContainerGap())
         );
 
@@ -134,19 +145,14 @@ public class ClientFrame2 extends javax.swing.JFrame {
                 Resposta rep = cli.getUser(new Player(Integer.parseInt(tfID.getText())));
 
                 // Tratamento de respostas recebidas
-                if (rep.getMessageStatus() == Resposta.GET_PLAYER_OK)
-                {
+                if (rep.getMessageStatus() == Resposta.GET_PLAYER_OK) {
                     tfNome.setText(rep.getPlayerContent().getName());
                     tfEmail.setText(rep.getPlayerContent().getEmail());
                     tfScore.setText(String.valueOf(rep.getPlayerContent().getScore()));
-                }
-                else if (rep.getMessageStatus() == Resposta.PLAYER_NOT_FOUND)
-                {
+                } else if (rep.getMessageStatus() == Resposta.PLAYER_NOT_FOUND) {
                     JOptionPane.showMessageDialog(null, "Cliente nao encontrado");
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -159,18 +165,41 @@ public class ClientFrame2 extends javax.swing.JFrame {
                 Resposta rep = cli.newUser(new Player(Integer.parseInt(tfID.getText()), tfNome.getText(), tfEmail.getText(), Float.parseFloat(tfScore.getText())));
 
                 // Tratamento de respostas recebidas
-                if (rep.getMessageStatus() == Resposta.NEW_PLAYER_OK)
-                {
+                if (rep.getMessageStatus() == Resposta.NEW_PLAYER_OK) {
                     JOptionPane.showMessageDialog(null, "Cliente registrado com sucesso!");
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
 
     }//GEN-LAST:event_btCadastrarActionPerformed
+
+    private void btListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarActionPerformed
+        try 
+        {
+            Client cli = new Client("localhost", 20000);
+            Resposta rep = cli.allUsers();
+
+            // Tratamento de respostas recebidas
+            if (rep.getMessageStatus() == Resposta.ALL_PLAYERS_OK) 
+            {
+                String playersIds = "";
+                for (int i = 0; i < rep.getPlayersList().length; i++) 
+                {
+                    playersIds += (String.valueOf(rep.getPlayersList()[i]) + "\n");
+                }
+                JOptionPane.showMessageDialog(null, playersIds);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Nenhum jogador encontrado!");
+            }
+        }
+        catch (Exception ex) 
+        {
+            ex.printStackTrace();
+        }    }//GEN-LAST:event_btListarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -209,6 +238,7 @@ public class ClientFrame2 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCadastrar;
+    private javax.swing.JButton btListar;
     private javax.swing.JButton btRecuperar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
