@@ -191,9 +191,18 @@ public class ClientFrame2 extends javax.swing.JFrame {
                 }
                 JOptionPane.showMessageDialog(null, playersIds);
             }
-            else
+            else if(rep.getMessageStatus() == Resposta.ALL_PLAYERS_ERROR)
             {
                 JOptionPane.showMessageDialog(null, "Nenhum jogador encontrado!");
+            }
+            else
+            {
+                String playersIds = "";
+                for (int i = 0; i < rep.getPlayersList().length; i++) 
+                {
+                    playersIds += (String.valueOf(rep.getPlayersList()[i]) + "\n");
+                }
+                JOptionPane.showMessageDialog(null, "Dados Inconsistentes nos servidores. A maior lista será exibida:\n" + playersIds);
             }
         }
         catch (Exception ex) 
